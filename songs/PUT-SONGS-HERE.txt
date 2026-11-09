@@ -1,0 +1,5 @@
+Put audio files in this folder. File names must match js/library.js:
+  highscore.mp3
+  alone.mp3
+  song3.mp3
+Then run pack-songs.bat once (in the main folder).

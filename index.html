@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rhythm × Immersion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<canvas id="cv"></canvas>
+<div class="grain"></div>
+
+<!-- ============ MENU ============ -->
+<div id="menu" class="screen show">
+  <aside class="hero">
+    <div class="eyebrow"><span class="blink"></span>CCDP10004 · PROJECT 02 · JOE's INTERACTIVE DEMO</div>
+    <h1 class="title">
+      <span class="l1">RHYTHM</span>
+      <span class="l2"><i>×</i>IMMER</span>
+      <span class="l3">SION<em class="dot">.</em></span>
+    </h1>
+    <p class="lede">One chart. Two runs.<br>First with <b>no sound</b>, then with <b>the music on</b>.<br>Your hands will tell you where immersion comes from.</p>
+    <div class="disc-wrap">
+      <div class="disc"><div class="label"><span id="discBpm">128</span><small>BPM</small></div></div>
+      <div class="tonearm"></div>
+    </div>
+    <div class="metro" id="metro"><i></i><i></i><i></i><i></i></div>
+  </aside>
+
+  <main class="panel">
+    <section>
+      <h2 class="step"><span>01</span>Choose a game <small>GAME</small></h2>
+      <div id="games" class="rows"></div>
+    </section>
+    <section>
+      <h2 class="step"><span>02</span>Choose a track <small>TRACK</small></h2>
+      <div id="songs" class="tracks"></div>
+      <input type="file" id="filePick" accept="audio/*" hidden>
+    </section>
+    <details class="settings">
+      <summary>Settings <small>OPTIONS</small></summary>
+      <div class="grid">
+        <label>Hit sound
+          <select id="sfx"><option value="crisp">Crisp</option><option value="chip">8-bit</option><option value="drum">Drum</option></select>
+        </label>
+        <label>Scroll speed <output id="speedV"></output>
+          <input type="range" id="speed" min="0.6" max="1.8" step="0.1">
+        </label>
+        <label>Audio offset <output id="offV"></output>
+          <input type="range" id="offset" min="-150" max="150" step="5">
+        </label>
+        <label class="chk"><input type="checkbox" id="useRec"> Use my recorded chart (if any)</label>
+        <label class="chk"><input type="checkbox" id="sfxMute"> Play hit sounds in Silent mode too</label>
+      </div>
+    </details>
+
+    <p id="hint" class="hint"></p>
+    <div class="dock">
+      <div class="dock-mode"><span class="step-mini">03 · MODE</span>
+        <div class="switch" id="modeSwitch">
+          <div class="knob"></div>
+          <button data-music="0"><b>SILENT</b><small>No music</small></button>
+          <button data-music="1"><b>SOUND</b><small>Music + hit sounds</small></button>
+        </div>
+      </div>
+      <div class="dock-act">
+        <button id="startBtn" class="btn primary"><span>Start</span><b>PLAY</b><i>→</i></button>
+        <button id="recBtn" class="btn ghost">Record a chart</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ============ WIPE / LOADING ============ -->
+<div id="wipe"><div class="wl"><div class="bars"><i></i><i></i><i></i><i></i><i></i></div><p id="loadMsg">LOADING</p></div></div>
+
+<!-- ============ PAUSE ============ -->
+<div id="pause" class="screen dim">
+  <div class="pausebox">
+    <div class="big">PAUSED</div>
+    <div class="actions col">
+      <button id="resumeBtn" class="btn primary"><span>Continue</span><b>RESUME</b><i>→</i></button>
+      <button id="retryBtn2" class="btn ghost">Restart</button>
+      <button id="quitBtn" class="btn ghost">Back to menu</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ RESULT ============ -->
+<div id="result" class="screen paper">
+  <div class="res">
+    <div class="res-left">
+      <div class="eyebrow" id="rMode"></div>
+      <div id="rRank" class="rank">S</div>
+      <div id="rTitle" class="rtitle"></div>
+      <div id="rSub" class="rsub"></div>
+      <div id="rInsight" class="insight"></div>
+    </div>
+    <div class="res-right">
+      <div class="rgrid">
+        <div><small>SCORE</small><b id="rScore" data-count></b></div>
+        <div><small>ACCURACY</small><b id="rAcc"></b></div>
+        <div><small>MAX COMBO</small><b id="rCombo"></b></div>
+        <div><small>AVG OFFSET</small><b id="rDev"></b></div>
+      </div>
+      <div class="counts" id="rCounts"></div>
+      <div class="histo"><div class="hlabel"><span>← EARLY</span><span>How far each hit landed from the beat</span><span>LATE →</span></div><canvas id="histo" width="1120" height="220"></canvas></div>
+      <div id="compare" class="compare"></div>
+      <div class="actions left">
+        <button id="swapBtn" class="btn primary"></button>
+        <button id="retryBtn" class="btn ghost">Play again</button>
+        <button id="menuBtn" class="btn ghost">Back to menu</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ RECORD DONE ============ -->
+<div id="recDone" class="screen paper">
+  <div class="card">
+    <div class="eyebrow">CHART RECORDER</div>
+    <h2>Chart recorded</h2>
+    <p id="recInfo"></p>
+    <div class="actions left">
+      <button id="recSave" class="btn primary"><span>Save &amp; use</span><b>SAVE</b><i>→</i></button>
+      <button id="recExport" class="btn ghost">Export JSON</button>
+      <button id="recImport" class="btn ghost">Import JSON</button>
+      <button id="recDiscard" class="btn ghost">Discard</button>
+    </div>
+    <input type="file" id="jsonPick" accept=".json,application/json" hidden>
+  </div>
+</div>
+
+<script src="js/audio.js"></script>
+<script src="js/fx.js"></script>
+<script src="js/songs.js"></script>
+<script src="js/library.js"></script>
+<script src="songs/manifest.js" onerror="void 0"></script>
+<script src="js/analysis.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/game-piano.js"></script>
+<script src="js/game-circles.js"></script>
+<script src="js/game-runner.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

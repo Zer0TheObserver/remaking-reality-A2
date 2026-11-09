@@ -1,0 +1,1 @@
+window.__SONG_EMBEDDED=['highscore.mp3','alone.mp3'];
