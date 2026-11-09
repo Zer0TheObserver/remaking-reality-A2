@@ -23,6 +23,7 @@
       <span class="l3">SION<em class="dot">.</em></span>
     </h1>
     <p class="lede">One chart. Two runs.<br>First with <b>no sound</b>, then with <b>the music on</b>.<br>Your hands will tell you where immersion comes from.</p>
+    <button class="watch-link" id="watchBtn"><span class="tri"></span><span><b>Then watch the video</b><small>Script, video &amp; references →</small></span></button>
     <div class="disc-wrap">
       <div class="disc"><div class="label"><span id="discBpm">128</span><small>BPM</small></div></div>
       <div class="tonearm"></div>
@@ -113,7 +114,32 @@
         <button id="swapBtn" class="btn primary"></button>
         <button id="retryBtn" class="btn ghost">Play again</button>
         <button id="menuBtn" class="btn ghost">Back to menu</button>
+        <button id="watchBtn2" class="btn ghost watch2">▶ Watch the video</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ WATCH: video + script ============ -->
+<div id="watch" class="screen paper">
+  <div class="wtop">
+    <button class="btn ghost" id="watchBack">← Back to the demo</button>
+    <div class="eyebrow"><span class="blink"></span>PART 02 · THE VIDEO</div>
+  </div>
+  <div class="wwrap">
+    <header class="whead">
+      <h1 class="wtitle">How are rhythm games <em>so immersive?</em></h1>
+      <p class="wsub">CCDP10004 · Project 2 · Group 42 — Remaking Reality</p>
+    </header>
+    <div class="vframe"><div id="video"></div></div>
+    <p class="vlink">Video link: <a id="vidLink" target="_blank" rel="noopener"></a></p>
+    <div class="wbody">
+      <nav id="toc" class="toc"></nav>
+      <article>
+        <div class="slabel">SCRIPT</div>
+        <div id="script" class="script"></div>
+        <section id="refs" class="refs"></section>
+      </article>
     </div>
   </div>
 </div>
@@ -144,6 +170,7 @@
 <script src="js/game-piano.js"></script>
 <script src="js/game-circles.js"></script>
 <script src="js/game-runner.js"></script>
+<script src="js/watch.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

@@ -308,6 +308,9 @@
   $('#retryBtn2').onclick = () => { AE.resume(); start(); };
   $('#swapBtn').onclick = () => { S.music = S.music ? 0 : 1; save(); renderModes(); start(); };
   $('#menuBtn').onclick = () => toMenu();
+  async function toWatch() { await wipeIn(''); AE.stop(); app.state = 'menu'; game = null; window.__buildWatch(); showScreen('watch'); document.querySelector('#watch').scrollTop = 0; wipeOut(); }
+  $('#watchBtn').onclick = toWatch; $('#watchBtn2').onclick = toWatch; $('#watchBack').onclick = () => toMenu();
+  window.__toMenu = () => toMenu();
   $('#quitBtn').onclick = () => { AE.resume(); toMenu(); };
   $('#resumeBtn').onclick = () => resume();
   async function toMenu() { await wipeIn(''); AE.stop(); app.state = 'menu'; game = null; renderSongs(); renderModes(); showScreen('menu'); wipeOut(); }
